@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
         // cor de fundo 0D0D0D
         appBarTheme: AppBarTheme(
           backgroundColor: const Color(0xFF1A1A1A),
-          color: Colors.white,
+          foregroundColor: Colors.white,
           centerTitle: true,
           elevation: 0,
           //cor de fundo 1A1A1A
@@ -37,7 +37,7 @@ class MainApp extends StatelessWidget {
           //elevação 0
         ),
       ),
-      home: const LanternaScreen(),
+      home: const Permissionwrapper(),
     );
   }
 }
@@ -58,6 +58,49 @@ class AppCores{
   // azul 42A5F5
   // verde 66BB6A
   // roxo AB47BC
+}
+
+class Permissionwrapper extends StatefulWidget{
+  const Permissionwrapper({super.key});
+  @override
+  State<Permissionwrapper> createState() => _PermissionwrapperState();
+}
+
+class _PermissionwrapperState extends State<Permissionwrapper> with WidgetsBindingObserver{
+  PermissionStatus _permissionStatus = PermissionStatus.denied;
+  bool _verificando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _verificar();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _verificar();
+  }
+
+  Future<void> _verificar() async {
+    setState((=> _verificando = true));
+    final status = await Permission.camera.status;
+    setState(() { _permissionStatus = status; _verificando = false;});
+  }
+  Future<void> _solicitar() async {}
+}
+
+
+  @override
+  Widget build(BuildContext context){
+    return const LanternaScreen();
+  }
 }
 
 class LanternaScreen extends StatefulWidget{
