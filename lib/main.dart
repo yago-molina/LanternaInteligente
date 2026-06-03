@@ -14,17 +14,17 @@ class MainApp extends StatelessWidget {
       // título Lanterna Inteligente
       title: 'Lanterna Inteligente',
       theme: ThemeData(
-        material3: true,
+        useMaterial3: true,
         brightness: Brightness.dark,
         //habilitar material 3
         //brilho escuro
         colorScheme: ColorScheme.fromSeed(
-          color: const Color(0xFFFFD700),
+          seedColor: const Color(0xFFFFD700),
           brightness: Brightness.dark,
           //cor semente FFD700 (amarelo meio dourado)
           //brilho escuro
         ),
-        backgroundColor: const Color(0xFF0D0D0D),
+        scaffoldBackgroundColor: const Color(0xFF0D0D0D),
         // cor de fundo 0D0D0D
         appBarTheme: AppBarTheme(
           backgroundColor: const Color(0xFF1A1A1A),
@@ -83,7 +83,7 @@ class _LanternaScreenState extends State<LanternaScreen>{
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               // padding: simétrico horizontal 20, vertical 16
               child: Row(
-                alignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // alinhamento mínimo do eixo: spaceBetween
                 children: [
                   Text(
@@ -98,12 +98,17 @@ class _LanternaScreenState extends State<LanternaScreen>{
                   // Text '🔦 Lanterna'
                   //   tamanho da fonte 20, negrito, branco, letterSpacing 1.5
                   Container(
-                    color: AppCores.amarelo,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppCores.amarelo,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: const Text(
                       'LIGADA',
                       style: TextStyle(
-                        color: Colors.black,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   )
@@ -118,9 +123,41 @@ class _LanternaScreenState extends State<LanternaScreen>{
             // AQUI VAMOS INSERIR UM CONTAINER JUNTOS
 
             Container(
+              decoration: BoxDecoration(
+                color: AppCores.roxo.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(12),
+              ),
               // decoração: roxo se ativo, cinzaEscuro se inativo
               child: Row(
                 children: [
+                  Icon(Icons.auto_mode, size: 30, color: Colors.white),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Modo Automático',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          'Ativa a lanterna automaticamente em ambientes escuros',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppCores.cinzaTexto,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Switch(
+                    value: _modoAutomatico,
+                    onChanged: _alternarModoAutomatico,
+                    activeColor: AppCores.amarelo,
+                  ),
                   // Icon: auto_mode
                   // Expanded: título e descrição
                   // Switch: value _modoAutomatico, onChanged _alternarModoAutomatico
@@ -144,6 +181,11 @@ class _LanternaScreenState extends State<LanternaScreen>{
                         spreadRadius: 5,
                       ),
                     ],
+                  ),
+                  child: const Icon(
+                    Icons.flashlight_on,
+                    size: 80,
+                    color: Colors.white,
                   ),
                   // duration: 400ms
                   // width/height: 160 se ligada, 120 se não
